@@ -1,0 +1,7 @@
+2.7.0 -> layer 없다면서 안됨
+nightly -> cudnn 못 찾는다고 안됨
+tf 2.8.0 version
+
+tfds 위치: 
+- ucf101
+home/ados/tensorflow_datasets/ucf101/ucf101_1_256/2.0.0

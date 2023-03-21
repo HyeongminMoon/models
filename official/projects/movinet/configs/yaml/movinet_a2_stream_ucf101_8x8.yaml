@@ -5,8 +5,10 @@
 
 runtime:
   distribution_strategy: 'one_device' #'tpu'
-  mixed_precision_dtype: 'float16'
+  num_gpus: 1
+  mixed_precision_dtype: 'float32'
 task:
+  # freeze_backbone: true
   losses:
     l2_weight_decay: 0.00003
     label_smoothing: 0.1
@@ -26,36 +28,36 @@ task:
     dropout_rate: 0.5
     activation: 'hard_swish'
   train_data:
-    name: kinetics600
+    name: ucf101
     variant_name: rgb
     feature_shape: !!python/tuple
-    - 50
+    - 32
     - 224
     - 224
     - 3
     temporal_stride: 5
     random_stride_range: 0
-    global_batch_size: 2 #1024
-    dtype: 'float16'
-    shuffle_buffer_size: 2 #1024
+    global_batch_size: 8 #1024
+    dtype: 'float32'
+    shuffle_buffer_size: 8 #1024
     min_image_size: 256
     aug_max_area_ratio: 1.0
     aug_max_aspect_ratio: 2.0
     aug_min_area_ratio: 0.08
     aug_min_aspect_ratio: 0.5
   validation_data:
-    name: kinetics600
+    name: ucf101
     feature_shape: !!python/tuple
-    - 50
+    - 32
     - 224
     - 224
     - 3
     temporal_stride: 5
     num_test_clips: 1
     num_test_crops: 1
-    global_batch_size: 2 #64
+    global_batch_size: 4 #64
     min_image_size: 256
-    dtype: 'float16'
+    dtype: 'float32'
     drop_remainder: false
 trainer:
   optimizer_config:
@@ -65,7 +67,7 @@ trainer:
         decay_steps: 85785
     warmup:
       linear:
-        warmup_steps: 2145
+        warmup_steps: 1000
     optimizer:
       type: 'rmsprop'
       rmsprop:
@@ -73,7 +75,7 @@ trainer:
         momentum: 0.9
         epsilon: 1.0
         clipnorm: 1.0
-  train_steps: 85785
+  train_steps: 15000
   steps_per_loop: 500
   summary_interval: 500
   validation_interval: 500

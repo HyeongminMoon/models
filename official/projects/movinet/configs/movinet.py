@@ -147,3 +147,15 @@ def movinet_kinetics600() -> cfg.ExperimentConfig:
   exp.task.model = model
 
   return exp
+
+@exp_factory.register_config_factory('movinet_ucf101')
+def movinet_ucf101() -> cfg.ExperimentConfig:
+  """Video classification on Videonet with MoViNet backbone."""
+  exp = video_classification.video_classification_ucf101()
+  exp.task.train_data.dtype = 'float16'
+  exp.task.validation_data.dtype = 'float16'
+
+  model = MovinetModel()
+  exp.task.model = model
+
+  return exp
